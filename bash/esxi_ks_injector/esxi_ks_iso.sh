@@ -15,6 +15,7 @@ while [[ "$#" -gt 0 ]]; do
     -i|--iso) BASEISO="$2"; shift ;;
     -k|--ks) KS="$2"; shift ;;
     -w|--working-dir) WORKINGDIR="$2"; shift ;;
+    -n|--name) NAME="$2"; shift ;;    
     *) echo "Unknown parameter: $1"; exit 1 ;;
   esac
   shift
@@ -47,8 +48,8 @@ sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild/boot.cfg
 sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild/efi/boot/boot.cfg
 
 cd ${WORKINGDIR}
-genisoimage -relaxed-filenames -J -R -o esxi-ks.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-boot efiboot.img -quiet --no-emul-boot ${WORKINGDIR}/isobuild  2>/dev/null
-echo "ISO saved at ${WORKINGDIR}/esxi-ks.iso"
+genisoimage -relaxed-filenames -J -R -o ${NAME}.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-boot efiboot.img -quiet --no-emul-boot ${WORKINGDIR}/isobuild  2>/dev/null
+echo "ISO saved at ${WORKINGDIR}/" . ${NAME} .".iso"
 
 umount ${WORKINGDIR}/iso
 rm -rf ${WORKINGDIR}/iso
