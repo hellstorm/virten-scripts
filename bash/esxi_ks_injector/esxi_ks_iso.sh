@@ -34,23 +34,23 @@ if [[ -z $WORKINGDIR ]]; then
   WORKINGDIR="/dev/shm/esxibuilder"
 fi
 
-mkdir -p ${WORKINGDIR}/iso
-mount -t iso9660 -o loop,ro ${BASEISO} ${WORKINGDIR}/iso
+mkdir -p ${WORKINGDIR}/iso-${NAME}
+mount -t iso9660 -o loop,ro ${BASEISO} ${WORKINGDIR}/iso-${NAME}
 
-mkdir -p ${WORKINGDIR}/isobuild
-cp ${KS} ${WORKINGDIR}/isobuild/KS.CFG
+mkdir -p ${WORKINGDIR}/isobuild-${NAME}
+cp ${KS} ${WORKINGDIR}/isobuild-${NAME}/KS.CFG
 cd ${WORKINGDIR}/iso
-tar cf - . | (cd ${WORKINGDIR}/isobuild; tar xfp -)
+tar cf - . | (cd ${WORKINGDIR}/isobuild-${NAME}; tar xfp -)
 
-chmod +w ${WORKINGDIR}/isobuild/boot.cfg
-chmod +w ${WORKINGDIR}/isobuild/efi/boot/boot.cfg
-sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild/boot.cfg
-sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild/efi/boot/boot.cfg
+chmod +w ${WORKINGDIR}/isobuild-${NAME}/boot.cfg
+chmod +w ${WORKINGDIR}/isobuild-${NAME}/efi/boot/boot.cfg
+sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild-${NAME}/boot.cfg
+sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild-${NAME}/efi/boot/boot.cfg
 
 cd ${WORKINGDIR}
 genisoimage -relaxed-filenames -J -R -o ${NAME}.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-boot efiboot.img -quiet --no-emul-boot ${WORKINGDIR}/isobuild  2>/dev/null
 echo "${NAME}.".iso"
 
-umount ${WORKINGDIR}/iso
-rm -rf ${WORKINGDIR}/iso
-rm -rf ${WORKINGDIR}/isobuild
+umount ${WORKINGDIR}/iso-${NAME}
+rm -rf ${WORKINGDIR}/iso-${NAME}
+rm -rf ${WORKINGDIR}/isobuild-${NAME}
