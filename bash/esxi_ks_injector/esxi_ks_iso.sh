@@ -48,7 +48,7 @@ sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild-${NAME}/boot
 sed -i -e 's/cdromBoot/ks=cdrom:\/KS.CFG/g'  ${WORKINGDIR}/isobuild-${NAME}/efi/boot/boot.cfg
 
 cd ${WORKINGDIR}
-genisoimage -relaxed-filenames -J -R -o ${NAME}.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-boot efiboot.img -quiet --no-emul-boot ${WORKINGDIR}/isobuild  2>/dev/null
+genisoimage -relaxed-filenames -J -R -o ${NAME}.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-boot efiboot.img -quiet --no-emul-boot ${WORKINGDIR}/isobuild-${NAME}  2>/dev/null
 echo "${NAME}.".iso"
 
 umount ${WORKINGDIR}/iso-${NAME}
