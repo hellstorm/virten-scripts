@@ -39,7 +39,7 @@ mount -t iso9660 -o loop,ro ${BASEISO} ${WORKINGDIR}/iso-${NAME}
 
 mkdir -p ${WORKINGDIR}/isobuild-${NAME}
 cp ${KS} ${WORKINGDIR}/isobuild-${NAME}/KS.CFG
-cd ${WORKINGDIR}/iso
+cd ${WORKINGDIR}/iso-${NAME}
 tar cf - . | (cd ${WORKINGDIR}/isobuild-${NAME}; tar xfp -)
 
 chmod +w ${WORKINGDIR}/isobuild-${NAME}/boot.cfg
